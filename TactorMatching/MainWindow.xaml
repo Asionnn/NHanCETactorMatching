@@ -5,18 +5,27 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TactorMatching"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Width="1280" Height="1024">
     <Grid KeyDown="Grid_KeyDown">
-        <Button x:Name="SeatBeltHigh" Content="Belt: High" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60" Margin="722,10,0,0" Height="60" Click="SeatBeltHigh_Click" />
-        <Button x:Name="SeatBeltLow" Content="Belt: Low" HorizontalAlignment="Left" Height="60" Margin="722,75,0,0" VerticalAlignment="Top" Width="60" Click="SeatBeltLow_Click"/>
-        <Button x:Name="StartBackMatch" Content="Start Back" HorizontalAlignment="Left" Height="60" Margin="76,225,0,0" VerticalAlignment="Top" Width="60" Click="StartBackMatch_Click"/>
-        <Button x:Name="StartWearMatch" Content="Start Wear" HorizontalAlignment="Left" Height="60" Margin="184,225,0,0" VerticalAlignment="Top" Width="60" Click="StartWearMatch_Click"/>
-        <Button x:Name="StartPanMatch" Content="Start Pan" HorizontalAlignment="Left" Height="60" Margin="295,225,0,0" VerticalAlignment="Top" Width="60" Click="StartPanMatch_Click"/>
-        <Label x:Name="InstructionLbl" Content="" HorizontalAlignment="Left" Height="67" Margin="184,89,0,0" VerticalAlignment="Top" Width="373" FontSize="16"/>
-        <Button x:Name="StartHighMatch" Content="High Match" HorizontalAlignment="Left" Height="60" Margin="601,225,0,0" VerticalAlignment="Top" Width="65" Click="StartHighMatch_Click"/>
-        <Button x:Name="StartLowMatch" Content="Low Match" HorizontalAlignment="Left" VerticalAlignment="Top" Width="65" Margin="695,225,0,0" Height="60" Click="StartLowMatch_Click"/>
-        <Button x:Name="Submit" Content="Submit" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60" Margin="722,349,0,0" Height="60" Click="Submit_Click"/>
-        <Button x:Name="bruh" Content="Button" HorizontalAlignment="Left" Height="33" Margin="64,37,0,0" VerticalAlignment="Top" Width="37"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="265*"/>
+            <ColumnDefinition Width="131*"/>
+        </Grid.ColumnDefinitions>
+        <Button x:Name="SeatBeltHigh" Content="Belt: High" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Margin="10,10,0,0" Height="90" Click="SeatBeltHigh_Click" FontSize="16" />
+        <Button x:Name="SeatBeltLow" Content="Belt: Low" HorizontalAlignment="Left" Height="90" Margin="10,122,0,0" VerticalAlignment="Top" Width="100" Click="SeatBeltLow_Click" FontSize="16"/>
+        <Button x:Name="StartBackMatch" Content="Start Back" HorizontalAlignment="Left" Height="90" Margin="615,334,0,0" VerticalAlignment="Top" Width="100" Click="StartBackMatch_Click" FontSize="16"/>
+        <Button x:Name="StartWearMatch" Content="Start Wear" HorizontalAlignment="Left" Height="90" Margin="386,334,0,0" VerticalAlignment="Top" Width="100" Click="StartWearMatch_Click" FontSize="16"/>
+        <Button x:Name="StartPanMatch" Content="Start Pan" HorizontalAlignment="Left" Height="90" Margin="0,334,0,0" VerticalAlignment="Top" Width="100" Click="StartPanMatch_Click" FontSize="16" Grid.Column="1"/>
+        <Label x:Name="InstructionLbl" Content="" HorizontalAlignment="Center" Height="67" Margin="478,145,0,781" VerticalAlignment="Center" Width="373" FontSize="16"/>
+        <Button x:Name="StartHighMatch" Content="Start High" HorizontalAlignment="Center" Height="90" Margin="498,449,243,0" VerticalAlignment="Top" Width="110" Click="StartHighMatch_Click" FontSize="16"/>
+        <Button x:Name="StartLowMatch" Content="Start Low" HorizontalAlignment="Left" VerticalAlignment="Top" Width="110" Margin="731,449,0,0" Height="90" Click="StartLowMatch_Click" FontSize="16"/>
+        <Button x:Name="Submit" Content="Submit" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Margin="311,933,0,0" Height="50" Click="Submit_Click" Grid.Column="1" FontSize="16"/>
+        <Button x:Name="TestWearHigh" Content="Wear: High" HorizontalAlignment="Left" Height="90" Margin="386,334,0,0" VerticalAlignment="Top" Width="100" FontSize="16" Click="TestWearHigh_Click"/>
+        <Button x:Name="TestWearLow" Content="Wear: Low" HorizontalAlignment="Left" Height="90" Margin="386,449,0,0" VerticalAlignment="Top" Width="100" FontSize="16" Click="TestWearLow_Click"/>
+        <Button x:Name="TestBackHigh" Content="Back: High" HorizontalAlignment="Left" Height="90" Margin="615,334,0,0" VerticalAlignment="Top" Width="100" FontSize="16" Click="TestBackHigh_Click"/>
+        <Button x:Name="TestBackLow" Content="Back: Low" HorizontalAlignment="Left" Height="90" Margin="615,449,0,0" VerticalAlignment="Top" Width="100" FontSize="16" Click="TestBackLow_Click"/>
+        <Button x:Name="TestPanHigh" Content="Pan: High" HorizontalAlignment="Left" Height="90" Margin="0,334,0,0" VerticalAlignment="Top" Width="100" FontSize="16" Grid.Column="1" Click="TestPanHigh_Click"/>
+        <Button x:Name="TestPanLow" Content="Pan: Low" HorizontalAlignment="Left" Height="90" Margin="0,449,0,0" VerticalAlignment="Top" Width="100" FontSize="16" Grid.Column="1" Click="TestPanLow_Click"/>
 
     </Grid>
 </Window>

@@ -81,9 +81,19 @@ namespace TactorMatching
         private int currentTask;
         private int LowOrHigh;
         private bool startedTask;
+        private bool highOrLowClicked;
         private int minGain;
         private int maxGain;
         private int currentGain;
+
+        private int back_high_avg;
+        private int back_low_avg;
+        private int pan_high_avg;
+        private int pan_low_avg;
+        private int wear_high_avg;
+        private int wear_low_avg;
+
+        private string data = "";
         #endregion
 
         public void testVibrations()
@@ -131,7 +141,13 @@ namespace TactorMatching
 
             StartHighMatch.Visibility = Visibility.Hidden;
             StartLowMatch.Visibility = Visibility.Hidden;
-            bruh.Visibility = Visibility.Hidden;
+
+            TestWearHigh.Visibility = Visibility.Hidden;
+            TestWearLow.Visibility = Visibility.Hidden;
+            TestBackHigh.Visibility = Visibility.Hidden;
+            TestBackLow.Visibility = Visibility.Hidden;
+            TestPanHigh.Visibility = Visibility.Hidden;
+            TestPanLow.Visibility = Visibility.Hidden;
 
             iterations = 0;
 
@@ -200,6 +216,8 @@ namespace TactorMatching
             InitializeComponent();
             InitializeStart();
             setupTactors();
+
+            
             
         }
 
@@ -225,33 +243,27 @@ namespace TactorMatching
 
         private void StartBackMatch_Click(object sender, RoutedEventArgs e)
         {
-            /* TODO: implement back tactors matching */
             InstructionLbl.Content = "Use the 'A' and 'D' keys to control the vibration" + Environment.NewLine
                          + "Press 'Start High' or 'Start Low' to begin";
             currentTask = (int)Type.back;
-            startedTask = true;
             HideStartButtons();
             ToggleLowAndHighBtns();
         }
 
         private void StartWearMatch_Click(object sender, RoutedEventArgs e)
         {
-            /* TODO: implement wearable tactors matching */
             InstructionLbl.Content = "Use the 'A' and 'D' keys to control the vibration" + Environment.NewLine
                          + "Press 'Start High' or 'Start Low' to begin";
             currentTask = (int)Type.wear;
-            startedTask = true;
             HideStartButtons();
             ToggleLowAndHighBtns();
         }
 
         private void StartPanMatch_Click(object sender, RoutedEventArgs e)
         {
-            /* TODO: implement pan tactors matching */
             InstructionLbl.Content = "Use the 'A' and 'D' keys to control the vibration" + Environment.NewLine
                          + "Press 'Start High' or 'Start Low' to begin";
             currentTask = (int)Type.Pan;
-            startedTask = true;
             HideStartButtons();
             ToggleLowAndHighBtns();
         }
@@ -259,25 +271,29 @@ namespace TactorMatching
 
         private void StartHighMatch_Click(object sender, RoutedEventArgs e)
         {
-            startedTask = true;
-            LowOrHigh = 1;
-            currentGain = 150;
-            minGain = 150;
-            maxGain = 255;
-            InstructionLbl.Content = "0/3 completed";
-            ToggleLowAndHighBtns();
-
+            if (!startedTask)
+            {
+                startedTask = true;
+                LowOrHigh = 1;
+                currentGain = 150;
+                minGain = 150;
+                maxGain = 255;
+                InstructionLbl.Content = "0/3 completed";
+            }
         }
 
         private void StartLowMatch_Click(object sender, RoutedEventArgs e)
         {
-            startedTask = true;
-            LowOrHigh = 0;
-            currentGain = 45;
-            minGain = 45;
-            maxGain = 105;
-            InstructionLbl.Content = "0/3 completed";
-
+            if (!startedTask)
+            {
+                startedTask = true;
+                LowOrHigh = 0;
+                currentGain = 45;
+                minGain = 45;
+                maxGain = 105;
+                InstructionLbl.Content = "0/3 completed";
+            }
+           
         }
 
         private void Submit_Click(object sender, RoutedEventArgs e)
@@ -340,51 +356,85 @@ namespace TactorMatching
                 iterations = 0;
                 completedTasks++;
 
-                if(completedTasks == 6)
+                InstructionLbl.Content = "";
+                if(completedTasks % 2 == 0)
                 {
+                    InstructionLbl.Content = "Completed task, please pick another one";
+                }
+
+                if (completedTasks == 6)
+                {
+                    InstructionLbl.Content = "Done! Here are the results";
                     int panh = 0, panl = 0, wearh = 0, wearl = 0, backh = 0, backl = 0;
 
-                    System.Diagnostics.Debug.WriteLine("PAN HIGH");
-                    for(int x = 0; x < 3; x++)
+                    for (int x = 0; x < 3; x++)
                     {
-                        System.Diagnostics.Debug.WriteLine(seat_pan_highs[x]);
                         panh += seat_pan_highs[x];
                     }
 
-                    System.Diagnostics.Debug.WriteLine("PAN LOW");
                     for (int x = 0; x < 3; x++)
                     {
-                        System.Diagnostics.Debug.WriteLine(seat_pan_lows[x]);
-                        panh += seat_pan_lows[x];
+                        panl += seat_pan_lows[x];
                     }
 
-                    System.Diagnostics.Debug.WriteLine("WEAR HIGH");
                     for (int x = 0; x < 3; x++)
                     {
-                        System.Diagnostics.Debug.WriteLine(seat_wear_highs[x]);
                         wearh += seat_wear_highs[x];
                     }
 
-                    System.Diagnostics.Debug.WriteLine("WEAR LOW");
                     for (int x = 0; x < 3; x++)
                     {
-                        System.Diagnostics.Debug.WriteLine(seat_wear_lows[x]);
                         wearl += seat_wear_lows[x];
                     }
 
-                    System.Diagnostics.Debug.WriteLine("BACK HIGH");
                     for (int x = 0; x < 3; x++)
                     {
-                        System.Diagnostics.Debug.WriteLine(seat_back_highs[x]);
                         backh += seat_back_highs[x];
                     }
 
-                    System.Diagnostics.Debug.WriteLine("BACK LOW");
                     for (int x = 0; x < 3; x++)
                     {
-                        System.Diagnostics.Debug.WriteLine(seat_back_lows[x]);
                         backl += seat_back_lows[x];
                     }
+
+                    pan_high_avg = panh / 3;
+                    pan_low_avg = panl / 3;
+                    wear_high_avg = wearh / 3;
+                    wear_low_avg = wearl / 3;
+                    back_high_avg = backh / 3;
+                    back_low_avg = backl / 3;
+
+
+                    /* make test buttons visible */
+                    TestWearHigh.Visibility = Visibility.Visible;
+                    TestWearLow.Visibility = Visibility.Visible;
+                    TestBackHigh.Visibility = Visibility.Visible;
+                    TestBackLow.Visibility = Visibility.Visible;
+                    TestPanHigh.Visibility = Visibility.Visible;
+                    TestPanLow.Visibility = Visibility.Visible;
+
+                    string time = DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss");
+                    var fileName = @"C:\Users\minisim\source\repos\TactorMatching\Data\Data.txt";
+
+                    data = "Time: " + time + Environment.NewLine
+                         + "Wearable values" + Environment.NewLine
+                         + "--------------------" + Environment.NewLine
+                         + "High = { " + seat_wear_highs[0] + ", " + seat_wear_highs[1] + ", " + seat_wear_highs[2] + " }, Average = " + wear_high_avg + Environment.NewLine
+                         + "Low = { " + seat_wear_lows[0] + ", " + seat_wear_lows[1] + ", " + seat_wear_lows[2] + " }, Average = " + wear_low_avg + Environment.NewLine + Environment.NewLine
+                         + "Back values" + Environment.NewLine
+                         + "--------------------" + Environment.NewLine
+                         + "High = { " + seat_back_highs[0] + ", " + seat_back_highs[1] + ", " + seat_back_highs[2] + " }, Average = " + back_high_avg + Environment.NewLine
+                         + "Low = { " + seat_back_lows[0] + ", " + seat_back_lows[1] + ", " + seat_back_lows[2] + " }, Average = " + back_low_avg + Environment.NewLine + Environment.NewLine
+                         + "Pan values" + Environment.NewLine
+                         + "--------------------" + Environment.NewLine
+                         + "High = { " + seat_pan_highs[0] + ", " + seat_pan_highs[1] + ", " + seat_pan_highs[2] + " }, Average = " + pan_high_avg + Environment.NewLine
+                         + "Low = { " + seat_pan_lows[0] + ", " + seat_pan_lows[1] + ", " + seat_pan_lows[2] + " }, Average = " + pan_low_avg + Environment.NewLine
+                         + Environment.NewLine + "==============================================================================" +  Environment.NewLine;
+
+                    System.IO.File.AppendAllText(fileName, data);
+
+
+
 
                 }
 
@@ -445,6 +495,70 @@ namespace TactorMatching
                         break;
                 }
             }
+        }
+
+        private void TestWearHigh_Click(object sender, RoutedEventArgs e)
+        {
+            ChangeGain(0, 7, wear_high_avg, 0);
+            ChangeGain(0, 7, wear_high_avg, 0);
+            Pulse(0, 7, 500, 0);
+            Pulse(0, 8, 500, 0);
+        }
+
+        private void TestWearLow_Click(object sender, RoutedEventArgs e)
+        {
+            ChangeGain(0, 7, wear_low_avg, 0);
+            ChangeGain(0, 7, wear_low_avg, 0);
+            Pulse(0, 7, 500, 0);
+            Pulse(0, 8, 500, 0);
+        }
+
+        private void TestBackHigh_Click(object sender, RoutedEventArgs e)
+        {
+            ChangeGain(0, 9, back_high_avg, 0);
+            ChangeGain(0, 10, back_high_avg, 0);
+            ChangeGain(0, 11, back_high_avg, 0);
+            ChangeGain(0, 12, back_high_avg, 0);
+            Pulse(0, 9, 500, 0);
+            Pulse(0, 10, 500, 0);
+            Pulse(0, 11, 500, 0);
+            Pulse(0, 12, 500, 0);
+        }
+
+        private void TestBackLow_Click(object sender, RoutedEventArgs e)
+        {
+            ChangeGain(0, 9, back_low_avg, 0);
+            ChangeGain(0, 10, back_low_avg, 0);
+            ChangeGain(0, 11, back_low_avg, 0);
+            ChangeGain(0, 12, back_low_avg, 0);
+            Pulse(0, 9, 500, 0);
+            Pulse(0, 10, 500, 0);
+            Pulse(0, 11, 500, 0);
+            Pulse(0, 12, 500, 0);
+        }
+
+        private void TestPanHigh_Click(object sender, RoutedEventArgs e)
+        {
+            ChangeGain(0, 13, pan_high_avg, 0);
+            ChangeGain(0, 14, pan_high_avg, 0);
+            ChangeGain(0, 15, pan_high_avg, 0);
+            ChangeGain(0, 16, pan_high_avg, 0);
+            Pulse(0, 13, 500, 0);
+            Pulse(0, 14, 500, 0);
+            Pulse(0, 15, 500, 0);
+            Pulse(0, 16, 500, 0);
+        }
+
+        private void TestPanLow_Click(object sender, RoutedEventArgs e)
+        {
+            ChangeGain(0, 13, pan_low_avg, 0);
+            ChangeGain(0, 14, pan_low_avg, 0);
+            ChangeGain(0, 15, pan_low_avg, 0);
+            ChangeGain(0, 16, pan_low_avg, 0);
+            Pulse(0, 13, 500, 0);
+            Pulse(0, 14, 500, 0);
+            Pulse(0, 15, 500, 0);
+            Pulse(0, 16, 500, 0);
         }
     }
 }
